@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Rplusplus::VERSION
   spec.authors       = ["Daniel Smith"]
   spec.email         = ["jellymann@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.summary       = %q{Making C++ slightly less painful.}
+  spec.description   = %q{A collection of command-line tools for making C++ development easier.}
+  spec.homepage      = "https://github.com/jellymann/rplusplus"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
