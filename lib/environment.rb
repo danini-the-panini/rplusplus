@@ -1,3 +1,6 @@
+require 'pathname'
+require 'erb'
+
 module RPlusPlus
   class Environment
 
@@ -22,7 +25,7 @@ module RPlusPlus
       def erbs_hash
         hash = {}
         Dir[Pathname(@path).join('**/*.erb')].each do |e|
-          hash[e[0..-5]] = e
+          hash[e[0..-5]] = [e]
         end
         hash
       end
@@ -50,13 +53,22 @@ module RPlusPlus
         @cpp_info.each do |cpp,info|
           next unless info[:main]
 
-          hash[basename cpp] = objects[objectify cpp].map do |d|
-            objectify d
-          end.keep_if do |d|
-            objects.include? d
-          end
+          hash[basename cpp] = obj_deps objectify(cpp)
         end
         hash
+      end
+
+      def obj_deps obj, visited=[]
+        deps = []
+        objects[obj].each do |d|
+          o = objectify(d)
+          next if visited.include?(o)
+          if objects.include?(o)
+            deps << o
+            deps |= obj_deps(o, [o,*visited])
+          end
+        end
+        deps
       end
 
       def info_hash type

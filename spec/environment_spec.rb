@@ -38,8 +38,8 @@ describe RPlusPlus::Environment do
   describe '#erbs' do
     it 'contains a list of files to be generated with erb' do
       expect(env.erbs).to include(
-        'erb_class.cpp' => 'erb_class.cpp.erb',
-        'erb_class.h' => 'erb_class.h.erb'
+        'erb_class.cpp' => ['erb_class.cpp.erb'],
+        'erb_class.h' => ['erb_class.h.erb']
       )
     end
   end
