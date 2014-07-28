@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "foo/quz.h"
+#include "erb_class.h"
 
 class OtherClass
 {
