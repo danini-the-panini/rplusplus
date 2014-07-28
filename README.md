@@ -6,13 +6,42 @@ Of all the horrid languages to ever exist, C++ has to be the most widely used. R
 
 R++ also aims to bring some kind of order to the world of C++ by following the principle of convention over configuration.
 
-## Installation
+WARNING: I just started this project so functionality is super limited. You have been warned!
 
-TODO: When it comes out, you'll just have to do this:
+## Installation
 
     $ gem install rplusplus
 
-## Usage (BIG TODO, NOTHING WORKS YET)
+## Using it in your Rakefile
+
+This bit of functionality exists, and it's super useful (but still in BETA):
+
+In your Rakefile, do this:
+
+```
+require 'rplusplus'
+env = RPlusPlus::Environment.new
+```
+
+Now, env has some useful properties:
+
+    * `env.objects` contains a hash of the form `'foo.o' => ['foo.cpp', 'foo.h', ...]` which you can use for creating file tasks for all your o-files.
+    * `env.builds` contains a hash of the form `'main' => ['main.o', 'foo.o', ...]` which you can use for file tasks for all your executables.
+    * `env.erbs` contains a hash of the form `'foo.cpp' => ['foo.cpp.erb']` so you can make file tasks for generating source code from embedded ruby source files.
+
+`env.objects` and `env.builds` magically take into account any `*.erb` files in existence so you can just code away without any funny business.
+
+I have used this in one of my own projects and it works like a charm, but I haven't come across any gotchas as of yet so YMMV.
+
+## How does it work?
+
+Object-file dependencies are calculated by going through each cpp file and reading each #include and following it recursively.
+
+The builds are discovered by finding each cpp file with a main function, and then going through each of it's dependencies to build a list of o-files to link.
+
+The ERB dependencies are simply computed by finding each erb file and then removing the erb extention.
+
+## Ideas for the soon-to-exist command-line tool
 
 Make a new C++ app, with a Rakefile, .gitignore, and some skeleton source files:
 
@@ -32,10 +61,10 @@ Generates a header and source file skeleton for a class:
 $ r++ generate class MyClass
 ```
 
-## Ideas
+## More Ideas
 
   * Have `r++` act as a wrapper or superset of `g++` to allow users to drop `r++` straight into an existing project.
-  * Add some C++ code generating libraries to use with ERB, and automagically sort out source files with the extension `.cpp.erb`, etc.
+  * Add some magical C++ code generating libraries to use with ERB.
   * Make it easy for people to package their library or app or whatever into a deb or an rpm or a pkg or a whatever using a config file called a "libspec" or something (a-la "gemspec").
   * On that note, make it easy for people to publish to a package repository (apt, yum, aur, etc).
 
@@ -44,6 +73,10 @@ $ r++ generate class MyClass
 This has absolutely nothing to do with Bell labs R++.
 
 ## I want you to help make R++ better for everyone.
+
+The easiest way to contribute is to try this thing out and submit an issue when it breaks.
+
+Otherwise if you want to help me implement a super awesome idea then pull requests are easy, fun, and beneficial to all of society:
 
 1. Fork it ( https://github.com/[my-github-username]/rplusplus/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
