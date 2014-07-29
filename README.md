@@ -2,9 +2,7 @@
 
 Making C++ slightly less painful.
 
-Of all the horrid languages to ever exist, C++ has to be the most widely used. R++ aims to being a collection of command-line utilities and magical fairy dust to make all the C++ monsters go away and let you, as the awesome programmer, get to what's important.
-
-R++ also aims to bring some kind of order to the world of C++ by following the principle of convention over configuration.
+R++ aims to being a collection of command-line utilities and magical fairy dust to make all the C++ monsters go away and let you, as the awesome programmer, get to what's important.
 
 WARNING: I just started this project so functionality is super limited. You have been warned!
 
@@ -14,8 +12,6 @@ WARNING: I just started this project so functionality is super limited. You have
 
 ## Using it in your Rakefile
 
-This bit of functionality exists, and it's super useful (but still in BETA):
-
 In your Rakefile, do this:
 
 ```
@@ -23,11 +19,11 @@ require 'rplusplus'
 env = RPlusPlus::Environment.new
 ```
 
-Now, env has some useful properties:
+Now, env has some useful properties which you can make use of in your Rake tasks:
 
-    * `env.objects` contains a hash of the form `'foo.o' => ['foo.cpp', 'foo.h', ...]` which you can use for creating file tasks for all your o-files.
-    * `env.builds` contains a hash of the form `'main' => ['main.o', 'foo.o', ...]` which you can use for file tasks for all your executables.
-    * `env.erbs` contains a hash of the form `'foo.cpp' => ['foo.cpp.erb']` so you can make file tasks for generating source code from embedded ruby source files.
+  * `env.objects` is a hash of the form `'foo.o' => ['foo.cpp', 'foo.h', ...]`
+  * `env.builds` is a hash of the form `'main' => ['main.o', 'foo.o', ...]`
+  * `env.erbs` is a hash of the form `'foo.cpp' => ['foo.cpp.erb']`
 
 `env.objects` and `env.builds` magically take into account any `*.erb` files in existence so you can just code away without any funny business.
 
@@ -41,19 +37,14 @@ The builds are discovered by finding each cpp file with a main function, and the
 
 The ERB dependencies are simply computed by finding each erb file and then removing the erb extention.
 
+Go ahead and crack open that codebase and see for yourself!
+
 ## Ideas for the soon-to-exist command-line tool
 
 Make a new C++ app, with a Rakefile, .gitignore, and some skeleton source files:
 
 ```
 $ r++ new MyApp
-```
-
-Some other things I plan on including:
-
-Work out the dependencies a-la `g++ -MM`, except in rake-friendly syntax instead of Make:
-```
-$ r++ -MM some_code.cpp
 ```
 
 Generates a header and source file skeleton for a class:
@@ -67,12 +58,13 @@ $ r++ generate class MyClass
   * Add some magical C++ code generating libraries to use with ERB.
   * Make it easy for people to package their library or app or whatever into a deb or an rpm or a pkg or a whatever using a config file called a "libspec" or something (a-la "gemspec").
   * On that note, make it easy for people to publish to a package repository (apt, yum, aur, etc).
+  * Get a better name perhaps, I don't thing "R++" is the best name for this, since it's already been used by a past, failed project (we might pick up its bad luck or something).
 
 ## Disclaimer
 
 This has absolutely nothing to do with Bell labs R++.
 
-## I want you to help make R++ better for everyone.
+## Help me make R++ better for everyone! :)
 
 The easiest way to contribute is to try this thing out and submit an issue when it breaks.
 
