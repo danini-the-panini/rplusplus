@@ -43,5 +43,11 @@ describe RPlusPlus::Commands::Generate do
 
       expect(fake_generator).to have_received(:call).with('foobar')
     end
+
+    it 'raises if the specific generator does not exists' do
+      expect {
+        RPlusPlus::Commands::Generate.call :nonexistent, :something
+      }.to raise_error(RPlusPlus::Commands::Generate::MissingGeneratorError, "'nonexistent' is not a r++ generator")
+    end
   end
 end
