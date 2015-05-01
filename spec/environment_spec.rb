@@ -4,7 +4,12 @@ describe RPlusPlus::Environment do
   let(:env) { RPlusPlus::Environment.new }
 
   before(:all) do
+    @pwd = Dir.pwd
     Dir.chdir('spec/support/samples')
+  end
+
+  after(:all) do
+    Dir.chdir(@pwd)
   end
 
   describe '#objects' do
