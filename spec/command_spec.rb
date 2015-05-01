@@ -14,6 +14,20 @@ describe RPlusPlus::Command do
     end
   end
 
+  describe '#list' do
+    after do
+      [:foo, :bar, :baz].each { |x| RPlusPlus::Command.commands.delete x }
+    end
+
+    it 'lists all registered generators' do
+      RPlusPlus::Command.register(:foo, fake_command)
+      RPlusPlus::Command.register(:bar, fake_command)
+      RPlusPlus::Command.register(:baz, fake_command)
+
+      expect(RPlusPlus::Command.list).to include(:foo, :bar, :baz)
+    end
+  end
+
   describe '#call' do
     before do
       RPlusPlus::Command.register :test_command, fake_command

@@ -29,7 +29,7 @@ describe RPlusPlus::Commands::Generate do
       RPlusPlus::Commands::Generate.register(:bar, fake_generator)
       RPlusPlus::Commands::Generate.register(:baz, fake_generator)
 
-      expect(RPlusPlus::Commands::Generate.list).to eq [:foo, :bar, :baz]
+      expect(RPlusPlus::Commands::Generate.list).to include(:foo, :bar, :baz)
     end
   end
 
