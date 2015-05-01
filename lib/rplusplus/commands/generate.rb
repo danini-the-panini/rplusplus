@@ -1,6 +1,8 @@
 module RPlusPlus
   module Commands
     class Generate
+      Command.register :generate, self
+
       def self.generators
         @@generators ||= {}
       end

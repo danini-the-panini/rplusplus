@@ -4,22 +4,30 @@ describe RPlusPlus::Commands::Generate do
   let(:fake_generator) { spy('generator') }
 
   after do
-    RPlusPlus::Commands::Generate.generators.clear
+    RPlusPlus::Commands::Generate.generators.delete :test_generator
+  end
+
+  it 'registers itself with Command' do
+    expect(RPlusPlus::Command.commands).to include(:generate => RPlusPlus::Commands::Generate)
   end
 
   describe '#register' do
     it 'registers a generator' do
-      RPlusPlus::Commands::Generate.register(:thing, fake_generator)
+      RPlusPlus::Commands::Generate.register(:test_generator, fake_generator)
 
-      expect(RPlusPlus::Commands::Generate.generators).to include(:thing => fake_generator)
+      expect(RPlusPlus::Commands::Generate.generators).to include(:test_generator => fake_generator)
     end
   end
 
   describe '#list' do
+    after do
+      [:foo, :bar, :baz].each { |x| RPlusPlus::Commands::Generate.generators.delete x }
+    end
+
     it 'lists all registered generators' do
-      RPlusPlus::Commands::Generate.register(:foo, spy('foo'))
-      RPlusPlus::Commands::Generate.register(:bar, spy('bar'))
-      RPlusPlus::Commands::Generate.register(:baz, spy('baz'))
+      RPlusPlus::Commands::Generate.register(:foo, fake_generator)
+      RPlusPlus::Commands::Generate.register(:bar, fake_generator)
+      RPlusPlus::Commands::Generate.register(:baz, fake_generator)
 
       expect(RPlusPlus::Commands::Generate.list).to eq [:foo, :bar, :baz]
     end
@@ -27,11 +35,11 @@ describe RPlusPlus::Commands::Generate do
 
   describe '#call' do
     before do
-      RPlusPlus::Commands::Generate.register(:thing, fake_generator)
+      RPlusPlus::Commands::Generate.register(:test_generator, fake_generator)
     end
 
     it 'runs the specified generator with the given arguments' do
-      RPlusPlus::Commands::Generate.call(:thing, 'foobar')
+      RPlusPlus::Commands::Generate.call(:test_generator, 'foobar')
 
       expect(fake_generator).to have_received(:call).with('foobar')
     end
