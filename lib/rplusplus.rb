@@ -1,5 +1,6 @@
 require "rplusplus/version"
-require "environment"
+require "rplusplus/environment"
+require "rplusplus/commands/generate"
 
 module RPlusPlus
 end
