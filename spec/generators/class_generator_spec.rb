@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe RPlusPlus::Generators::ClassGenerator do
   it 'registers itself with the generate command' do
-    expect(RPlusPlus::Commands::Generate.generators).to include(:class => RPlusPlus::Generators::ClassGenerator)
+    expect(RPlusPlus::Commands::Generate.generators).to include(
+      :class => RPlusPlus::Generators::ClassGenerator)
   end
 
   describe '#call' do
@@ -28,8 +29,10 @@ describe RPlusPlus::Generators::ClassGenerator do
       header_file = File.read('my_class.h')
       class_file = File.read('my_class.cpp')
 
-      expect(header_file).to include('#ifndef MY_CLASS_H', '#define MY_CLASS_H', 'class MyClass {', 'MyClass();', 'virtual ~MyClass();')
-      expect(class_file).to include('#include "my_class.h"', 'MyClass::MyClass() {', 'MyClass::~MyClass() {')
+      expect(header_file).to include('#ifndef MY_CLASS_H', '#define MY_CLASS_H',
+        'class MyClass {', 'MyClass();', 'virtual ~MyClass();')
+      expect(class_file).to include('#include "my_class.h"', 'MyClass::MyClass() {',
+        'MyClass::~MyClass() {')
     end
   end
 end

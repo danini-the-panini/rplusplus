@@ -42,7 +42,8 @@ describe RPlusPlus::Command do
     it 'raises if the specific command does not exists' do
       expect {
         RPlusPlus::Command.call :nonexistent, :something
-      }.to raise_error(RPlusPlus::Command::MissingCommandError, "'nonexistent' is not a r++ command")
+      }.to raise_error(RPlusPlus::Command::MissingCommandError,
+        "'nonexistent' is not a r++ command")
     end
   end
 end
