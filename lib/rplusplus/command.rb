@@ -13,6 +13,7 @@ module RPlusPlus
     end
 
     def self.call name, *args
+      name = name.to_sym
       if !self.commands.has_key? name
         raise MissingCommandError.new("'#{name}' is not a r++ command")
       end

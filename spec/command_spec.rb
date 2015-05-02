@@ -34,9 +34,15 @@ describe RPlusPlus::Command do
     end
 
     it 'calls the specific command with the given arguments' do
-      RPlusPlus::Command.call :test_command, :something, option: 'foobar'
+      RPlusPlus::Command.call :test_command, 'foo', 'bar', 'baz'
 
-      expect(fake_command).to have_received(:call).with(:something, option: 'foobar')
+      expect(fake_command).to have_received(:call).with('foo', 'bar', 'baz')
+    end
+
+    it 'converts command strings to symbols' do
+      RPlusPlus::Command.call 'test_command', 'foo', 'bar', 'baz'
+
+      expect(fake_command).to have_received(:call).with('foo', 'bar', 'baz')
     end
 
     it 'raises if the specific command does not exists' do
