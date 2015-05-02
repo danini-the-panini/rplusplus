@@ -16,6 +16,7 @@ module RPlusPlus
       end
 
       def self.call name, *args
+        name = name.to_sym
         if !self.generators.has_key? name
           raise MissingGeneratorError.new("'#{name}' is not a r++ generator")
         end

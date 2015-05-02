@@ -41,9 +41,15 @@ describe RPlusPlus::Commands::Generate do
     end
 
     it 'runs the specified generator with the given arguments' do
-      RPlusPlus::Commands::Generate.call(:test_generator, 'foobar')
+      RPlusPlus::Commands::Generate.call(:test_generator, 'foo', 'bar', 'baz')
 
-      expect(fake_generator).to have_received(:call).with('foobar')
+      expect(fake_generator).to have_received(:call).with('foo', 'bar', 'baz')
+    end
+
+    it 'converts generator strings into symbols' do
+      RPlusPlus::Commands::Generate.call('test_generator', 'foo', 'bar', 'baz')
+
+      expect(fake_generator).to have_received(:call).with('foo', 'bar', 'baz')
     end
 
     it 'raises if the specific generator does not exists' do
