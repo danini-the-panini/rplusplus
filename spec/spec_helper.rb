@@ -1,5 +1,5 @@
 require 'bundler/setup'
-Bundler.setup
+require 'fakefs/spec_helpers'
 
 require 'rplusplus'
 
