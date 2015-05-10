@@ -20,7 +20,7 @@ module RPlusPlus
         if !self.generators.has_key? name
           raise MissingGeneratorError.new("'#{name}' is not a r++ generator")
         end
-        self.generators[name].call *args
+        self.generators[name].call(*args)
       end
 
       class MissingGeneratorError < StandardError
