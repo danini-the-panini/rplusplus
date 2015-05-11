@@ -4,11 +4,20 @@ Making C++ slightly less painful.
 
 R++ aims to being a collection of command-line utilities and magical fairy dust to make all the C++ monsters go away and let you, as the awesome programmer, get to what's important.
 
-WARNING: I just started this project so functionality is super limited. You have been warned!
-
 ## Installation
 
     $ gem install rplusplus
+    
+## Usage
+
+### Class Generator
+
+Generates a header and source file skeleton for a class:
+```
+$ r++ generate class MyClass
+```
+
+This generates a `my_class.h` and `my_class.cpp` file in the current directory.
 
 ## Using it in your Rakefile
 
@@ -39,7 +48,7 @@ The ERB dependencies are simply computed by finding each erb file and then remov
 
 Go ahead and crack open that codebase and see for yourself!
 
-## Ideas for the soon-to-exist command-line tool
+## Coming Soon
 
 Make a new C++ app, with a Rakefile, .gitignore, and some skeleton source files:
 
@@ -47,22 +56,22 @@ Make a new C++ app, with a Rakefile, .gitignore, and some skeleton source files:
 $ r++ new MyApp
 ```
 
-Generates a header and source file skeleton for a class:
+Generate a basic Rakefile, etc. for an existing C++ project:
+
 ```
-$ r++ generate class MyClass
+$ r++ init
 ```
 
 ## More Ideas
 
-  * Have `r++` act as a wrapper or superset of `g++` to allow users to drop `r++` straight into an existing project.
   * Add some magical C++ code generating libraries to use with ERB.
   * Make it easy for people to package their library or app or whatever into a deb or an rpm or a pkg or a whatever using a config file called a "libspec" or something (a-la "gemspec").
   * On that note, make it easy for people to publish to a package repository (apt, yum, aur, etc).
-  * Get a better name perhaps, I don't thing "R++" is the best name for this, since it's already been used by a past, failed project (we might pick up its bad luck or something).
+  * Have `r++` act as a wrapper or superset of `g++` to allow users to drop `r++` straight into an existing project.
 
 ## Disclaimer
 
-This has absolutely nothing to do with Bell labs R++.
+This has absolutely nothing to do with [Bell labs R++](http://ect.bell-labs.com/who/pfps/rpp/index.html).
 
 ## Help me make R++ better for everyone! :)
 
