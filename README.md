@@ -7,7 +7,7 @@ R++ aims to being a collection of command-line utilities and magical fairy dust 
 ## Installation
 
     $ gem install rplusplus
-    
+
 ## Usage
 
 ### Class Generator
@@ -19,24 +19,27 @@ $ r++ generate class MyClass
 
 This generates a `my_class.h` and `my_class.cpp` file in the current directory.
 
-## Using it in your Rakefile
+### In your Rakefile
 
-In your Rakefile, do this:
+**NOTE**: You still have to do some work yourself in the Rakefile at this point. Grab the example Rakefile in `examples/Rakefile` and modify it to your needs.
+
+At the moment, all R++ can do is calculate the dependencies for you, a la `g++ -MM`. Just add this to your Rakefile:
 
 ```
 require 'rplusplus'
 env = RPlusPlus::Environment.new
 ```
 
-Now, env has some useful properties which you can make use of in your Rake tasks:
+Now, `env` has some useful properties which you can make use of in your Rake tasks:
 
-  * `env.objects` is a hash of the form `'foo.o' => ['foo.cpp', 'foo.h', ...]`
-  * `env.builds` is a hash of the form `'main' => ['main.o', 'foo.o', ...]`
-  * `env.erbs` is a hash of the form `'foo.cpp' => ['foo.cpp.erb']`
+  * `env.objects` is a hash of `*.o` files to dependencies:
+    `'foo.o' => ['foo.cpp', 'foo.h', ...]`
+  * `env.builds` is a hash of executables to dependencies:
+    `'main' => ['main.o', 'foo.o', ...]`
+  * `env.erbs` is a hash of `*.erb` files to dependencies:
+    `'foo.cpp' => ['foo.cpp.erb']`
 
-`env.objects` and `env.builds` magically take into account any `*.erb` files in existence so you can just code away without any funny business.
-
-I have used this in one of my own projects and it works like a charm, but I haven't come across any gotchas as of yet so YMMV.
+The `env.objects` and `env.builds` hashes magically take into account any `*.erb` files in existence so you can just code away without any funny business.
 
 ## How does it work?
 
@@ -64,6 +67,8 @@ $ r++ init
 
 ## More Ideas
 
+  * Move all the boilerplate from the example Rakefile into R++ so there is less for the developers to do to get started.
+  * Do some kind of caching for the dependencies. I'm suspecting the Rakefile will take really long on a larger project.
   * Add some magical C++ code generating libraries to use with ERB.
   * Make it easy for people to package their library or app or whatever into a deb or an rpm or a pkg or a whatever using a config file called a "libspec" or something (a-la "gemspec").
   * On that note, make it easy for people to publish to a package repository (apt, yum, aur, etc).
