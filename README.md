@@ -9,6 +9,17 @@ WARNING: I just started this project so functionality is super limited. You have
 ## Installation
 
     $ gem install rplusplus
+    
+## Usage
+
+### Class Generator
+
+Generates a header and source file skeleton for a class:
+```
+$ r++ generate class MyClass
+```
+
+This generates a `my_class.h` and `my_class.cpp` file in the current directory.
 
 ## Using it in your Rakefile
 
@@ -45,11 +56,6 @@ Make a new C++ app, with a Rakefile, .gitignore, and some skeleton source files:
 
 ```
 $ r++ new MyApp
-```
-
-Generates a header and source file skeleton for a class:
-```
-$ r++ generate class MyClass
 ```
 
 ## More Ideas
