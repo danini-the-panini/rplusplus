@@ -5,6 +5,7 @@ require "rplusplus/environment"
 require "rplusplus/command"
 require "rplusplus/commands/generate"
 require "rplusplus/generators/class_generator"
+require "rplusplus/commands/new"
 
 module RPlusPlus
   def self.call argv
