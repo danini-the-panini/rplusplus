@@ -1,4 +1,4 @@
-# R++
+# R++ [![Gem Version](https://badge.fury.io/rb/rplusplus.svg)](http://badge.fury.io/rb/rplusplus) [![Circle CI](https://circleci.com/gh/jellymann/rplusplus.svg?style=svg)](https://circleci.com/gh/jellymann/rplusplus) [![Code Climate](https://codeclimate.com/github/jellymann/rplusplus/badges/gpa.svg)](https://codeclimate.com/github/jellymann/rplusplus)
 
 Making C++ slightly less painful.
 
