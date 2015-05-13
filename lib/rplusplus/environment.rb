@@ -83,10 +83,6 @@ module RPlusPlus
         {is_main: is_main, dependencies: dependencies}
       end
 
-      def unerb filename
-        File.basename filename, '.erb'
-      end
-
       def is_main_declaration line
         !!(line =~ /^\W*int\W*main\(.*?\)/)
       end
