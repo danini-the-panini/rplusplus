@@ -31,88 +31,73 @@ module RPlusPlus
       end
 
       def objects_hash
-        @cpp_info ||= info_hash('cpp')
-        @header_info ||= info_hash('h')
+        @cpp_metadata ||= metadata_for_filetype('cpp')
+        @header_metadata ||= metadata_for_filetype('h')
 
-        hash = {}
-        @cpp_info.each do |cpp,info|
-          hash[objectify cpp] = [cpp] | deps_for(info)
+        @cpp_metadata.each_with_object({}) do |(cpp_file, metadata), hash|
+          hash[objectify cpp_file] = [cpp_file] | dependencies_from_metadata(metadata)
         end
-        hash
       end
 
-      def deps_for info
-        info[:deps] | info[:deps].map do |d|
-          deps_for(@header_info[d])
-        end.flatten
+      def dependencies_from_metadata metadata
+        dependency_dependencies = metadata[:dependencies].flat_map do |dependency|
+          dependencies_from_metadata(@header_metadata[dependency])
+        end
+        metadata[:dependencies] | dependency_dependencies
       end
 
       def builds_hash
         objects
-        hash = {}
-        @cpp_info.each do |cpp,info|
-          next unless info[:main]
-
-          hash[basename cpp] = obj_deps objectify(cpp)
+        @cpp_metadata.each_with_object({}) do |(cpp_file, metadata), hash|
+          hash[File.basename cpp_file, '.cpp'] = object_dependencies objectify(cpp_file) if metadata[:is_main]
         end
-        hash
       end
 
-      def obj_deps obj, visited=[]
-        deps = []
-        objects[obj].each do |d|
-          o = objectify(d)
-          next if visited.include?(o)
-          if objects.include?(o)
-            deps << o
-            deps |= obj_deps(o, [o,*visited])
+      def object_dependencies object_file, visited=[]
+        objects[object_file].each_with_object([]) do |source_dependency, dependencies|
+          object_dependency = objectify(source_dependency)
+          if !visited.include?(object_dependency) && objects.include?(object_dependency)
+            dependencies << object_dependency
+            dependencies |= object_dependencies(object_dependency, [object_dependency, *visited])
           end
         end
-        deps
       end
 
-      def info_hash type
-        hash = {}
-        Dir[Pathname(@path).join("**/*.#{type}")].each do |f|
-          hash[f] = info_for f
+      def metadata_for_filetype type
+        metadata = Dir[Pathname(@path).join("**/*.#{type}")].each_with_object({}) do |filename, hash|
+          hash[filename] = metadata_for filename
         end
-        Dir[Pathname(@path).join("**/*.#{type}.erb")].each do |f|
-          hash[unerb(f)] = info_for f
+        Dir[Pathname(@path).join("**/*.#{type}.erb")].each_with_object(metadata) do |filename, hash|
+          hash[File.basename filename, '.erb'] = metadata_for filename
         end
-        hash
       end
 
-      def info_for fn
-        main = false
-        deps = []
-        File.foreach(fn) do |l|
-          main ||= !!main_match(l)
-          dep = include_match l
-          deps << dep if dep
+      def metadata_for filename
+        is_main = false
+        dependencies = []
+        File.foreach(filename) do |line|
+          is_main ||= is_main_declaration(line)
+          dependency = get_included_file line
+          dependencies << dependency if dependency
         end
-        {main: main, deps: deps}
+        {is_main: is_main, dependencies: dependencies}
       end
 
-      def unerb fn
-        fn.gsub(/\.erb$/,'')
+      def unerb filename
+        File.basename filename, '.erb'
       end
 
-      def basename fn
-        fn.gsub(/\..*$/,'')
+      def is_main_declaration line
+        !!(line =~ /^\W*int\W*main\(.*?\)/)
       end
 
-      def main_match l
-        l =~ /^\W*int\W*main\(.*?\)/
-      end
-
-      def include_match l
-        m = /#include "(?<file>.*)"/.match(l)
+      def get_included_file line
+        m = /#include "(?<file>.*)"/.match(line)
         m[:file] if m
       end
 
       def objectify filename
         filename.gsub(/\.(cpp|cpp\.erb|h|h\.erb)$/,'.o')
       end
-
   end
 end
