@@ -6,13 +6,26 @@ R++ aims to being a collection of command-line utilities and magical fairy dust 
 
 ## Installation
 
-    $ gem install rplusplus
+```
+$ gem install rplusplus
+```
 
 ## Usage
 
+### Create a new Project
+
+Make a new C++ app, with a Rakefile, gitignore, and some skeleton source files:
+
+```
+$ r++ new MyApp
+```
+
+This creates a folder called `MyApp` with a main source file called `my_app.cpp` as well as accompanying `Rakefile` and `.gitignore` files to get you going.
+
 ### Class Generator
 
-Generates a header and source file skeleton for a class:
+Generate header and source file skeletons for a class:
+
 ```
 $ r++ generate class MyClass
 ```
@@ -25,18 +38,18 @@ This generates a `my_class.h` and `my_class.cpp` file in the current directory.
 
 At the moment, all R++ can do is calculate the dependencies for you, a la `g++ -MM`. Just add this to your Rakefile:
 
-```
+```ruby
 require 'rplusplus'
 env = RPlusPlus::Environment.new
 ```
 
 Now, `env` has some useful properties which you can make use of in your Rake tasks:
 
-  * `env.objects` is a hash of `*.o` files to dependencies:
+  * `env.objects` is a hash of `*.o` files to dependencies: e.g.
     `'foo.o' => ['foo.cpp', 'foo.h', ...]`
-  * `env.builds` is a hash of executables to dependencies:
+  * `env.builds` is a hash of executables to dependencies: e.g.
     `'main' => ['main.o', 'foo.o', ...]`
-  * `env.erbs` is a hash of `*.erb` files to dependencies:
+  * `env.erbs` is a hash of `*.erb` files to dependencies: e.g.
     `'foo.cpp' => ['foo.cpp.erb']`
 
 The `env.objects` and `env.builds` hashes magically take into account any `*.erb` files in existence so you can just code away without any funny business.
@@ -53,12 +66,6 @@ Go ahead and crack open that codebase and see for yourself!
 
 ## Coming Soon
 
-Make a new C++ app, with a Rakefile, .gitignore, and some skeleton source files:
-
-```
-$ r++ new MyApp
-```
-
 Generate a basic Rakefile, etc. for an existing C++ project:
 
 ```
@@ -67,7 +74,8 @@ $ r++ init
 
 ## More Ideas
 
-  * Move all the boilerplate from the example Rakefile into R++ so there is less for the developers to do to get started.
+  * Move all the boilerplate from the example Rakefile into R++ so there is less for developers to do to get started.
+  * Add support for a C++ test framework and add a `rake test` task.
   * Do some kind of caching for the dependencies. I'm suspecting the Rakefile will take really long on a larger project.
   * Add some magical C++ code generating libraries to use with ERB.
   * Make it easy for people to package their library or app or whatever into a deb or an rpm or a pkg or a whatever using a config file called a "libspec" or something (a-la "gemspec").
@@ -78,7 +86,7 @@ $ r++ init
 
 This has absolutely nothing to do with [Bell labs R++](http://ect.bell-labs.com/who/pfps/rpp/index.html).
 
-## Help me make R++ better for everyone! :)
+## Help make R++ better for everyone :)
 
 The easiest way to contribute is to try this thing out and submit an issue when it breaks.
 
